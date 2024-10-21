@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# kasutajate nimede lugemine failist ja kasutajate loomine 
+
+# Kontrollime kas fail on olemas ja loetav ning loome kasutaja kasutades varasemalt loodud skripti lisa_kasutaja
+if [ -r "$1" ]
+then
+        if [ -x "lisa_kasutaja" ]
+        then
+               
+                for kasutaja in $(cat "$1")
+                do
+               
+                        sh lisa_kasutaja $kasutaja
+                done
+        fi
+else
+        # väljastame veateete
+        echo "faili ei eksisteeri või pole see loetav"
+fi
