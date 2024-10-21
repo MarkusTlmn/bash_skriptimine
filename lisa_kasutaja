@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# kasutaja loomine vastavalt sisestatud nimele
+
+# kasutaja loomine 
+sudo /usr/sbin/useradd $1 -m -s /bin/bash
+output=$?
+
+# kontrollime kas kasutaja loodi või mitte ning väljastame vastava teate
+if [ $output -eq 0 ]
+then
+        echo "Kasutaja $1 on edukalt loodud. Info:"
+        id $1
+        ls -la /home/$1
+else
+        echo "Tekkis probleem kasutaja $1 loomisega. Info:"
+        echo "$output"
+fi
+
+# skripti lõpp
