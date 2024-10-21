@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Skript loob kasutaja kasutades esimesest failist saadud nime ja teisest failist saadud paaroli
+
+# Kontrollime kas mõlemad failid on olemas ja on loetavad
+if [ -r "$1" ]
+then
+        if [ -r "$2" ]
+        then
+# loome kasutajad ning lisame neili parooli
+                for kasutaja in $(cat "$1")
+                do
+                        sudo /usr/sbin/useradd $kasutaja -m -s /bin/bash
+                        output=$?
+
+                        if [ $output -eq 0 ]
+                        then
+                                echo "Kasutaja $kasutaja on edukalt loodud. Info:"
+                                id $kasutaja
+                                ls -la /home/$kasutaja
+
+                                grep "$kasutaja" $2 | sudo chpasswd
+                        else
+                                echo "tekkis probleem kasutaja $kasutaja loomisega."
+                                echo "Info: $output"
+                        fi
+                done
+        else
+                # Veateade teise faili kohta
+                echo "fail '$2' ei eksisteeri või pole loetav."
+        fi
+else
+        # Veateda esimese faili kohta
+        echo "fail '$1' ei eksisteeri või pole loetav."
+fi
+
+# skripti lopp
