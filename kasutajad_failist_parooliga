@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# loob kasutajad kasutades failist saadud andmeid
+
+# Kontrollime kas fail on olemas ja loetav ning loeme faili sisu ja loome kasutaja koos soovitud parooliga
+if [ -r "$1" ]
+then
+        if [ -x "lisa_kasutaja" ]
+        then
+                for rida in $(cat "$1")
+                do
+                        kasutaja=$(echo "$rida" | cut -f1 -d:)
+
+                        sh lisa_kasutaja $kasutaja
+
+                        echo "$rida" |sudo chpasswd
+                done
+	else
+		echo "fail lisa_kasutaja pole olemas"
+        fi
+else
+        # väljastame veateate
+        echo "fail ei eksisteeri või pole loetav."
+fi
+# skripti lopp
